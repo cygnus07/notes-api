@@ -13,4 +13,7 @@ let envVars = envSchema.parse(process.env)
 export const config = {
     env: envVars.NODE_ENV,
     port: envVars.PORT,
+    cors: {
+        origin: 'https://localhost:3000'
+    }
 }
