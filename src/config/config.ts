@@ -6,7 +6,9 @@ dotenv.config()
 const envSchema = z.object({
     NODE_ENV: z.enum(['development', 'test', 'production' ]).default('development'),
     PORT: z.coerce.number().default(5000),
-    MONGO_URI: z.string().startsWith('mongodb').url()
+    MONGO_URI: z.string().startsWith('mongodb').url(),
+    JWT_SECRET: z.string().min(32),
+    JWT_EXPIREIN: z.string().default('7d')
 })
 
 let envVars = envSchema.parse(process.env)
@@ -23,4 +25,8 @@ export const config = {
             maxPoolSize: 10
         }
     },
+    jwt: {
+        secret: envVars.JWT_SECRET,
+        expire: envVars.JWT_EXPIREIN
+    }
 }
