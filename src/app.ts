@@ -4,6 +4,8 @@ import morgan from 'morgan'
 import helmet from 'helmet'
 import { config } from './config/config.js'
 import { Request, Response } from 'express'
+import cookieParser from 'cookie-parser'
+import compression from 'compression'
 
 const createApp = () => {
     const app = express()
@@ -13,9 +15,14 @@ const createApp = () => {
         extended: true,
         limit: '10mb'
     }))
-    app.use(morgan('dev'))
+
+    if(config.env !== 'test'){
+            app.use(morgan('dev'))
+    }
     app.use(helmet())
     app.use(cors(config.cors))
+    app.use(cookieParser())
+    app.use(compression())
 
     app.get('/', (_req: Request, res: Response) => {
         res.status(200).json({
