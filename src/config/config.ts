@@ -6,6 +6,7 @@ dotenv.config()
 const envSchema = z.object({
     NODE_ENV: z.enum(['development', 'test', 'production' ]).default('development'),
     PORT: z.coerce.number().default(5000),
+    MONGO_URI: z.string().startsWith('mongodb').url()
 })
 
 let envVars = envSchema.parse(process.env)
@@ -15,5 +16,11 @@ export const config = {
     port: envVars.PORT,
     cors: {
         origin: 'https://localhost:3000'
-    }
+    },
+    mongoose: {
+        uri: envVars.MONGO_URI,
+        options: {
+            maxPoolSize: 10
+        }
+    },
 }
