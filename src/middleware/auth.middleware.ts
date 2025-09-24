@@ -1,9 +1,9 @@
 import { NextFunction, Response } from "express";
 import { AuthRequest } from "../controllers/auth.controller.js";
 import jwt from 'jsonwebtoken'
-import { AuthenticationError, AuthorizationError } from "../utils/errors";
-import { JWTUtil } from "../utils/jwt.utils";
-import { User } from "../models/user.model";
+import { AuthenticationError, AuthorizationError } from "../utils/errors.js";
+import { JWTUtil } from "../utils/jwt.utils.js";
+import { User } from "../models/user.model.js";
 
 
 export const authenticate = async (

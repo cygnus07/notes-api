@@ -6,6 +6,8 @@ import { config } from './config/config.js'
 import { Request, Response } from 'express'
 import cookieParser from 'cookie-parser'
 import compression from 'compression'
+import apiRoutes from './routes/index.js'
+import { errorHandler } from './middleware/error.middleware.js'
 
 const createApp = () => {
     const app = express()
@@ -31,6 +33,9 @@ const createApp = () => {
         })
     })
 
+    app.use('/api/v1', apiRoutes)
+
+    app.use(errorHandler)
     return app
 
 }

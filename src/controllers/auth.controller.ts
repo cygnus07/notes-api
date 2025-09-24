@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { ValidationError } from "../utils/errors";
-import { AuthService } from "../services/auth.service";
-import { config } from "../config/config";
+import { ValidationError } from "../utils/errors.js";
+import { AuthService } from "../services/auth.service.js";
+import { config } from "../config/config.js";
 import { IUser } from "../models/user.model.js";
 
 

@@ -72,7 +72,7 @@ export class AuthService {
         // return auth resposne
 
         const { email, password} = data
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ email }).select('+refreshTokens')
         if(!user) {
             throw new AuthenticationError('user not found')
         }
@@ -87,7 +87,8 @@ export class AuthService {
             user.email,
             user.role
         )
-
+        
+        // console.log(user)
         user.refreshTokens.push(refreshToken)
         if(user.refreshTokens.length > 5){
             user.refreshTokens = user.refreshTokens.slice(-5)
