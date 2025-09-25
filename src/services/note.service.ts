@@ -106,5 +106,28 @@ export class NoteService {
         await note.deleteOne()
     }
 
-    
+    static async getAllAdmin(page = 1, limit = 20) {
+        const skip = (page -1) *limit
+
+        const [notes, total] = await Promise.all([
+            Note.find({})
+                .populate('user', 'name email')
+                .sort({ createAt: -1})
+                .skip(skip)
+                .limit(limit),
+            Note.countDocuments({})
+        ])
+
+        return {
+            notes,
+            pagination: {
+                total,
+                page,
+                limit,
+                pages: Math.ceil(total/limit)
+            }
+        }
+    }
+
+
 }
