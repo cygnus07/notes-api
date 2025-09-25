@@ -1,7 +1,6 @@
 import { Types } from "mongoose";
 import { INote, Note } from "../models/note.model.js";
 import { AuthorizationError, NotFoundError, ValidationError } from "../utils/errors.js";
-import { IUser } from "../models/user.model.js";
 
 export interface CreateNoteData {
     title: string,
@@ -53,8 +52,7 @@ export class NoteService {
             throw new ValidationError('Invalid note id')
         }
 
-        const note = await Note.findById(noteId). populate('user', 'name email role')
-        const noteUser = note?.user as unknown as IUser
+        const note = await Note.findById(noteId). populate('user', 'name email')
         if(!note) {
             throw new NotFoundError("Note not found")
         }
