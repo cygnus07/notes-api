@@ -64,5 +64,47 @@ export class NoteService {
         return note
     }
 
+    static async update(
+        noteId: string,
+        userId: string,
+        data: UpdateNoteData
+    ) : Promise<INote> {
+        if(!Types.ObjectId.isValid(noteId)){
+            throw new ValidationError('Invalid note id')
+        }
+        const note = await Note.findById({ noteId })
+        if(!note){
+            throw new NotFoundError('Note not found')
+        }
+
+        if(note.user.toString() !== userId){
+            throw new AuthorizationError('you can only update your notes')
+        }
+
+        if(data.title !== undefined) note.title = data.title
+        if(data.content !== undefined) note.content = data.content
+
+        await note.save()
+        await note.populate('user', 'name email')
+        return note
+    }
+
+    static async delete(noteId: string, userId: string) : Promise<void> {
+        if(!Types.ObjectId.isValid(noteId)){
+            throw new ValidationError('Invalid note Id')
+        }
+
+        const note = await Note.findById(noteId)
+        if(!note){
+            throw new NotFoundError("Note not foundd")
+        }
+
+        if(note.user.toString() !== userId){
+            throw new AuthorizationError('You can only delete you own notes')
+        }
+
+        await note.deleteOne()
+    }
+
     
 }
