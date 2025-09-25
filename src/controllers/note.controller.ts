@@ -1,7 +1,7 @@
-import { NextFunction, Request, Response } from "express";
-import { AuthRequest } from "./auth.controller";
-import { AuthorizationError, ValidationError } from "../utils/errors";
-import { NoteService } from "../services/note.service";
+import { NextFunction, Response } from "express";
+import { AuthRequest } from "./auth.controller.js";
+import { AuthorizationError, ValidationError } from "../utils/errors.js";
+import { NoteService } from "../services/note.service.js"
 
 
 

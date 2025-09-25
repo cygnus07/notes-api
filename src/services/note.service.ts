@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
-import { INote, Note } from "../models/note.model";
-import { AuthorizationError, NotFoundError, ValidationError } from "../utils/errors";
+import { INote, Note } from "../models/note.model.js";
+import { AuthorizationError, NotFoundError, ValidationError } from "../utils/errors.js";
 
 export interface CreateNoteData {
     title: string,
