@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { INote, Note } from "../models/note.model.js";
 import { AuthorizationError, NotFoundError, ValidationError } from "../utils/errors.js";
+import { IUser } from "../models/user.model.js";
 
 export interface CreateNoteData {
     title: string,
@@ -47,17 +48,19 @@ export class NoteService {
         }
     }
 
-    static async getById(noteId: string, userId: string) : Promise<INote> {
+    static async getById(noteId: string, userId: string, role: string) : Promise<INote> {
         if(!Types.ObjectId.isValid(noteId)){
             throw new ValidationError('Invalid note id')
         }
 
-        const note = await Note.findById(noteId). populate('user', 'name email')
+        const note = await Note.findById(noteId). populate('user', 'name email role')
+        const noteUser = note?.user as unknown as IUser
         if(!note) {
             throw new NotFoundError("Note not found")
         }
-
-        if(note.user._id.toString() !== userId){
+        // console.log(note.user)
+        // console.log(noteUser.role)
+        if(note.user._id.toString() !== userId && role !== 'admin' ){
             throw new AuthorizationError("You dont have access to this note")
         }
 

@@ -55,7 +55,8 @@ export class NoteController {
             const { id} = req.params
             const note = await NoteService.getById(
                 id,
-                req.user!._id.toString()
+                req.user!._id.toString(),
+                req.user!.role
             )
 
             res.json({
