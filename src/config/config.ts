@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import { env } from 'process'
 import z from 'zod'
 
 dotenv.config()
@@ -8,7 +9,8 @@ const envSchema = z.object({
     PORT: z.coerce.number().default(5000),
     MONGO_URI: z.string().startsWith('mongodb').url(),
     JWT_SECRET: z.string().min(32),
-    JWT_EXPIREIN: z.string().default('7d')
+    JWT_EXPIREIN: z.string().default('7d'),
+    CORS_ORIGIN: z.string().optional()
 })
 
 let envVars = envSchema.parse(process.env)
@@ -17,7 +19,10 @@ export const config = {
     env: envVars.NODE_ENV,
     port: envVars.PORT,
     cors: {
-        origin: 'https://localhost:3000'
+        origin: envVars.CORS_ORIGIN
+        ? envVars.CORS_ORIGIN.split(',') 
+        : ['http://localhost:3000'],
+        credentials: true
     },
     mongoose: {
         uri: envVars.MONGO_URI,

@@ -44,6 +44,8 @@ const userSchema = new Schema<IUser> ({
         type: String,
         select: false
     }]
+}, {
+    timestamps: true
 })
 
 userSchema.index({ role: 1})
