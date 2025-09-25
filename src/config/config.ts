@@ -18,9 +18,7 @@ export const config = {
     env: envVars.NODE_ENV,
     port: envVars.PORT,
     cors: {
-        origin: envVars.CORS_ORIGIN
-        ? envVars.CORS_ORIGIN.split(',') 
-        : ['http://localhost:3000'],
+        origin: ['http://localhost:3000' , 'https://notes-app.kuldeepdev.me'],
         credentials: true
     },
     mongoose: {
