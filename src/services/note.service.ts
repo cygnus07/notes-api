@@ -5,7 +5,7 @@ import { AuthorizationError, NotFoundError, ValidationError } from "../utils/err
 export interface CreateNoteData {
     title: string,
     content: string,
-    userId: string
+    user: Types.ObjectId
 }
 
 export interface UpdateNoteData {
@@ -15,26 +15,26 @@ export interface UpdateNoteData {
 
 export class NoteService {
     static async create(data: CreateNoteData ) : Promise<INote> {
-        const { title, content, userId} = data
-
+        const { title, content, user} = data
+        console.log(data)
         const note = await Note.create({
             title,
             content,
-            userId
+            user
         })
 
         return note
     }
 
-    static async getAll(userId: string, page=1, limit=10){
+    static async getAll(user: Types.ObjectId, page=1, limit=10){
         const skip = (page -1) * limit
         const [notes, total] = await Promise.all([
-            Note.find({ user: userId})
+            Note.find({ user})
                 .sort({ createAt: -1})
                 .skip(skip)
                 .limit(limit)
                 .populate('user', 'name email'),
-            Note.countDocuments({ user: userId})
+            Note.countDocuments({ user})
         ])
         return {
             notes,
@@ -66,18 +66,18 @@ export class NoteService {
 
     static async update(
         noteId: string,
-        userId: string,
+        user: Types.ObjectId,
         data: UpdateNoteData
     ) : Promise<INote> {
         if(!Types.ObjectId.isValid(noteId)){
             throw new ValidationError('Invalid note id')
         }
-        const note = await Note.findById({ noteId })
+        const note = await Note.findById( noteId )
         if(!note){
             throw new NotFoundError('Note not found')
         }
 
-        if(note.user.toString() !== userId){
+        if(note.user.toString() !== user._id.toString()){
             throw new AuthorizationError('you can only update your notes')
         }
 
@@ -112,7 +112,7 @@ export class NoteService {
         const [notes, total] = await Promise.all([
             Note.find({})
                 .populate('user', 'name email')
-                .sort({ createAt: -1})
+                .sort({ createdAt: -1})
                 .skip(skip)
                 .limit(limit),
             Note.countDocuments({})

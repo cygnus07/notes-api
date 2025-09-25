@@ -16,8 +16,9 @@ export class NoteController {
             const note = await NoteService.create({
                 title,
                 content,
-                userId: req.user!._id.toString()
+                user: req.user!._id
             })
+
 
             res.status(201).json({
                 success: true,
@@ -35,7 +36,7 @@ export class NoteController {
             const limit = parseInt(req.query.limit as string) || 10
 
             const result = await NoteService.getAll(
-                req.user!._id.toString(),
+                req.user!._id,
                 page,
                 limit
             )
@@ -74,7 +75,7 @@ export class NoteController {
 
             const note = await NoteService.update(
                 id,
-                req.user!._id.toString(),
+                req.user!._id,
                 { title, content}
             )
 

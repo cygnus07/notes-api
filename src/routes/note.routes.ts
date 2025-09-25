@@ -5,12 +5,14 @@ import { authenticate } from "../middleware/auth.middleware.js";
 const router = Router()
 
 router.use(authenticate)
-router.post('/', NoteController.create)
-router.put('/:id', NoteController.update)
+// router.get('/admin/all', NoteController.getAllAdmin)
+router.post('/',  NoteController.create)
+
 router.get('/', NoteController.getAll)
+
+router.put('/:id', NoteController.update)
 router.get('/:id', NoteController.getById)
 router.delete('/:id', NoteController.delete)
 
-router.get('/admin/all', NoteController.getAllAdmin)
 
-export default Router
+export default router
