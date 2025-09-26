@@ -29,8 +29,8 @@ A scalable REST API for notes management with JWT authentication and role-based 
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/yourusername/primetrade-notes-api.git
-cd primetrade-notes-api
+https://github.com/cygnus07/notes-api.git
+cd notes-api
 ```
 
 2. **Install dependencies:**
@@ -42,7 +42,7 @@ npm install
 ```env
 NODE_ENV=development
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/primetrade_notes
+MONGO_URI=mongodb://localhost:27017/notes_api
 JWT_SECRET=your-super-secret-jwt-key-min-32-chars-long
 JWT_EXPIREIN=7d
 ```
